@@ -1,0 +1,31 @@
+{
+  "db": "SQLite",
+  "c44b4f7267d46abfe8614de8c6b7754cf2fa657b43773396a37ee5038fe12d88": {
+    "describe": {
+      "columns": [
+        {
+          "name": "media_json",
+          "ordinal": 0,
+          "type_info": "Text"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Right": 1
+      }
+    },
+    "query": "\nSELECT media_json\nFROM telegram_media_group\nWHERE group_id = ?1\nORDER BY msg_id\n        "
+  },
+  "cabdeabbaec8a6204439bc3f1b860237cd669d5188c609105bd117655f57c0a6": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Right": 3
+      }
+    },
+    "query": "\nINSERT OR REPLACE INTO telegram_media_group ( group_id, msg_id, media_json )\nVALUES ( ?1, ?2, ?3 )\n        "
+  }
+}
