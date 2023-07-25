@@ -79,13 +79,16 @@ impl<'a> ProgMsg<'a> {
             return resp;
         };
 
-        if let ResponseKind::ReplyTo(text) = resp.kind {
-            _ = self
+        if let ResponseKind::ReplyTo(text, buttons) = resp.kind {
+            let mut builder = self
                 .bot
                 .edit_message_text(self.trigger_msg.chat.id, msg_id, text.text())
                 .entities(text.into_entities())
-                .disable_web_page_preview(true)
-                .await;
+                .disable_web_page_preview(true);
+            if let Some(buttons) = buttons {
+                builder = builder.reply_markup(buttons.into());
+            }
+            _ = builder.await;
 
             self.delete_on_drop = false;
 

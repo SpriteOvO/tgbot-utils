@@ -1,14 +1,7 @@
 use std::{borrow::Cow, ops::Add};
 
-use teloxide::{
-    payloads::SendMessage,
-    prelude::*,
-    requests::JsonRequest,
-    types::{
-        Chat, ChatId, ChatKind, Message, MessageEntity, MessageEntityKind, MessageEntityRef,
-        MessageId, User,
-    },
-    Bot,
+use teloxide::types::{
+    Chat, ChatKind, Message, MessageEntity, MessageEntityKind, MessageEntityRef, MessageId, User,
 };
 use url::Url;
 
@@ -71,10 +64,6 @@ impl<'a> MessageText<'a> {
             entities: entities.into(),
             disable_preview: false,
         }
-    }
-
-    pub fn executor(self, bot: &'a Bot) -> MessageTextExecutor<'a> {
-        MessageTextExecutor { text: self, bot }
     }
 
     pub fn text(&self) -> &str {
@@ -284,22 +273,6 @@ impl<'a> MessageTextBuilder<'a> {
 
     pub fn build(self) -> MessageText<'a> {
         self.text
-    }
-}
-
-pub struct MessageTextExecutor<'a> {
-    text: MessageText<'a>,
-    bot: &'a Bot,
-}
-
-impl<'a> MessageTextExecutor<'a> {
-    pub fn send_message(self, chat_id: ChatId) -> JsonRequest<SendMessage> {
-        let entities: Vec<_> = self.text.entities.into();
-
-        self.bot
-            .send_message(chat_id, self.text.text)
-            .entities(entities)
-            .disable_web_page_preview(self.text.disable_preview)
     }
 }
 
